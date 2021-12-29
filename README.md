@@ -6,7 +6,7 @@ Language ITA: Programma con interfaccia, richiede un'immagine in input,
               la classificazione dell'immagine (cane o pesce)
 
 Language EN: User Interface Program, that request an image in input, 
-              load an already trained model and classifies the image as a Dog or a Fish.
+              loads an already trained model and classifies the image as a Dog or a Fish.
  
  
 ![image](https://user-images.githubusercontent.com/96829843/147671287-a5a15f31-f3e2-4693-a4ac-dc41ba31f616.png)
