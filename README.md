@@ -13,4 +13,4 @@ Language EN: User Interface Program, that request an image in input,
 
 
 
-![image](https://user-images.githubusercontent.com/96829843/147671440-6fc4b022-fdba-458e-9e79-742ee19e459e.png)
+![image](https://user-images.githubusercontent.com/96829843/147671605-a393498d-f1e3-448e-b90c-ae2c2cb3171e.png)
