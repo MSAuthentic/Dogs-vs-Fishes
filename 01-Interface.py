@@ -1,4 +1,4 @@
-import imp
+import tensorflow_text as text
 from tkinter import font
 from tkinter.constants import ANCHOR, CENTER, X
 import tensorflow as tf
@@ -17,29 +17,32 @@ IMAGE_HEIGHT, IMAGE_WIDTH= 190,190
 def select_file():
     global x
     filetypes = (
-        ('Immagine', '*.png *.jpeg *.jpg'),
-        ('Tutti i files', '*.*')
+        ('Image', '*.png *.jpeg *.jpg'),
+        ('All files', '*.*')
     )
 
     filename = fd.askopenfilename(
-        title='Apri un file',
+        title='Open File',
         initialdir='/',
         filetypes=filetypes)
 
     img = cv2.imread(filename=filename)
-    cv2.imshow('Immagine Selezionata', img)
+    cv2.imshow('Selected Image', img)
     sleep(2)
     x=filename
     if(filename ==''):
-        showinfo('Immagine','Nessun immagine selezionata!')
+        showinfo('Image','No image selected!')
 
         
 def CaricaModello():
     try:
-        new_model = tf.keras.models.load_model(r'C:\Users\User\Desktop\Models\Modello_Cani_Pesci')       
+        localhost_save_option = tf.saved_model.SaveOptions(experimental_io_device="/job:localhost")
+
+        new_model = tf.keras.models.load_model(r'C:\Users\ankit\Desktop\GitHub\Cani-vs-Pesci\Dogs-vs-Fishes\Models\Modello_Cani_Pesci',options=localhost_save_option )       
         return new_model
     except Exception as e:
-        showinfo('Modello','Errore durante il caricamento')
+        print(e)
+        showinfo('Model Error','Error While Loading the Model')
         
         
 def  TestaImmagine():
@@ -55,7 +58,7 @@ def  TestaImmagine():
         score = tf.nn.softmax(predictions[0])      
         CLASS_NAMES= ['Cani','Pesci']
         showinfo('Risultato' ,
-                "Questa immagine sembra essere parte della categoria {} con  {:.2f} percento di confidenza."
+                "This image looks like in the category of {} with  {:.2f} of confidence percentage."
                 .format(CLASS_NAMES[np.argmax(score)], 100 * np.max(score)))
     except Exception as e:
         print(e)  
@@ -64,14 +67,14 @@ def  TestaImmagine():
         
         
 def CreaGUI(root):
-    root.title('Cane o Pesce?')
+    root.title('Dog or Fish?')
     root.geometry("500x200")
     root.resizable(False,False)
     frm = tk.Frame(root, background='white', height=200, width=500)
     frm.place(relx=0,rely=0)
 
     lb= ttk.Label(frm,
-                text="Selezionare un'immagine!",
+                text="Select an Image!",
                 justify='center',
                 font=("Footlight MT Light",20),
                 background='white')
@@ -79,7 +82,7 @@ def CreaGUI(root):
             rely=0.2,
             anchor=CENTER)
 
-    btnLoadImg = tk.Button(frm, text='Scegli Immagine',
+    btnLoadImg = tk.Button(frm, text='Select Image',
                             command=select_file,
                             background='#212529',
                             foreground='white',
@@ -89,7 +92,7 @@ def CreaGUI(root):
     btnLoadImg.place(relx=0.2, rely=0.5,anchor=CENTER)
 
 
-    btnPredictImg =  tk.Button(frm, text='Indovina l''immagine',
+    btnPredictImg =  tk.Button(frm, text='Guess the Image',
                             command= TestaImmagine,
                             background='#212529',
                             foreground='white',
@@ -99,7 +102,7 @@ def CreaGUI(root):
     btnPredictImg.place(relx=0.48, rely=0.5,anchor=CENTER)
 
 
-    btnQuit =  tk.Button(frm, text="Esci",
+    btnQuit =  tk.Button(frm, text="Exit",
                         command=root.destroy,
                         background='#212529',
                         foreground='white',
